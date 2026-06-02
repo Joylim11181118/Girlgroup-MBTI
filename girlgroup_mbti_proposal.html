@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>걸그룹 포지션으로 보는 내 MBTI</title>
+    <style>
+        /* 기본 스타일 초기화 */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+        }
+
+        @page {
+            size: A4;
+            margin: 15mm 12mm;
+            background-color: #fdfafb; /* 사랑스럽고 부드러운 핑크빛이 도는 크림톤 */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #fdfafb;
+            color: #333333;
+            font-size: 10.5pt;
+            line-height: 1.6;
+        }
+
+        /* 기획서 헤더 영역 (풀블레드 스타일 효과) */
+        .header-banner {
+            background: linear-gradient(135deg, #ff758f, #ffb3c1);
+            color: #ffffff;
+            margin: -15mm -12mm 25px -12mm;
+            padding: 28px 15mm;
+            text-align: center;
+            border-bottom: 3px solid #ff4d6d;
+        }
+
+        .header-banner h1 {
+            font-size: 22pt;
+            margin: 0 0 8px 0;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .header-banner p {
+            font-size: 11pt;
+            margin: 0;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        /* 메인 컨테이너 */
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+
+        /* 섹션 스타일 */
+        .section {
+            margin-bottom: 25px;
+            background: #ffffff;
+            border: 1px solid #ffe5ec;
+            border-radius: 8px;
+            padding: 18px 20px;
+            box-shadow: 0 2px 4px rgba(255, 117, 143, 0.04);
+            page-break-inside: avoid;
+        }
+
+        .section-title {
+            font-size: 14pt;
+            color: #ff4d6d;
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 5px solid #ff758f;
+            font-weight: 700;
+            page-break-after: avoid;
+        }
+
+        /* 테이블 스타일 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        th, td {
+            border: 1px solid #ffe5ec;
+            padding: 10px 12px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #fff0f3;
+            color: #ff4d6d;
+            font-weight: 600;
+            width: 25%;
+        }
+
+        td {
+            background-color: #ffffff;
+        }
+
+        /* 하이라이트 및 리스트 */
+        .highlight-box {
+            background-color: #fff5f6;
+            border-left: 3px solid #ff758f;
+            padding: 12px 15px;
+            margin-top: 10px;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            font-weight: 600;
+            color: #c9184a;
+        }
+
+        ul, ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        /* 질문지 스타일 아키텍처 */
+        .question-card {
+            border-bottom: 1px dashed #ffe5ec;
+            padding: 12px 5px;
+        }
+        
+        .question-card:last-child {
+            border-bottom: none;
+        }
+
+        .q-title {
+            font-weight: 700;
+            color: #333333;
+            margin-bottom: 8px;
+            font-size: 11pt;
+        }
+
+        .q-title span {
+            color: #ff4d6d;
+            margin-right: 5px;
+        }
+
+        .option-box {
+            display: table;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .option {
+            display: table-cell;
+            width: 50%;
+            padding: 6px 8px;
+            background: #fdfafb;
+            border: 1px solid #fff0f3;
+            border-radius: 4px;
+            font-size: 10pt;
+        }
+
+        .option:first-child {
+            border-right: 4px solid #ffffff; /* 반반 분할을 위한 공백 매너 */
+        }
+        
+        .option:last-child {
+            border-left: 4px solid #ffffff;
+        }
+
+        .type-badge {
+            display: inline-block;
+            background-color: #ffccd5;
+            color: #c9184a;
+            font-size: 8.5pt;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+
+        /* 매핑 레이아웃 전용 페이지 브레이크 제어 */
+        .mapping-section {
+            page-break-inside: auto !important;
+        }
+        .mapping-grid {
+            page-break-inside: avoid;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 헤더 번들 -->
+    <div class="header-banner">
+        <h1>웹 콘텐츠 개발 기획서 및 질문지 설계</h1>
+        <p>프로젝트명: 걸그룹 포지션으로 보는 내 MBTI (with 선생님 궁합)</p>
+    </div>
+
+    <div class="container">
+
+        <!-- 1. 프로젝트 개요 -->
+        <div class="section">
+            <div class="section-title">1. 프로젝트 요약 및 매니페스토</div>
+            <p>
+                본 프로젝트는 <strong>이화여자고등학교 학생들</strong>을 타깃으로 하여, 기존의 길고 딱딱한 MBTI 성격 유형 검사에서 벗어나 
+                <strong>'여자아이돌 포지션'</strong>이라는 친숙하고 매력적인 소재를 결합한 웹 기반 참여형 테스트입니다.
+            </p>
+            <p>
+                특히 결과 페이지에서 예측 불가능한 재미 요소로 <strong>'학교 선생님과의 궁합' (최고/최악)</strong>을 제공함으로써, 
+                또래 집단 내에서 폭발적인 공유와 자발적 바이럴을 유도합니다. 복잡하고 지루한 정밀 심리 분석은 의도적으로 배제하고, 
+                쉬는 시간에 모바일로 가볍게 즐긴 뒤 친구들과 실시간으로 스크린샷을 공유하며 소통할 수 있는 매끄러운 유저 경험(UX)을 구축하는 것을 핵심 목표로 합니다.
+            </p>
+            <div class="highlight-box">
+                <p>슬로건: "내가 걸그룹 멤버라면? MBTI부터 선생님 궁합까지, 지금 바로 확인해봐!"</p>
+            </div>
+        </div>
+
+        <!-- 2. 기획 및 전략 상세 -->
+        <div class="section">
+            <div class="section-title">2. 기획 목적 및 다운스트림 전략</div>
+            
+            <table>
+                <tr>
+                    <th>주요 목표</th>
+                    <td>여자아이돌 포지션 테스트로 유저의 강한 흥미를 이끌어 내고, 이와 연동된 MBTI 및 학교 선생님과의 궁합을 즉각 확인하게 함.</td>
+                </tr>
+                <tr>
+                    <th>부가 목표</th>
+                    <td>
+                        <ul>
+                            <li>성격 탐색 과정의 장벽을 낮춰 학생들이 스스로를 긍정적이고 유쾌하게 돌아보는 기회 제공.</li>
+                            <li>학급 내에서 자연스러운 대화 주제 및 웃음 포인트를 형성하여 즐거운 학교생활 분위기 조성.</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <th>타깃 유저 (Persona)</th>
+                    <td>K-POP 아이돌 덕질 문화 및 트렌드에 극도로 민감하며 친숙한 <strong>이화여고 학생들</strong></td>
+                </tr>
+                <tr>
+                    <th>이용 환경</th>
+                    <td>학교 쉬는 시간, 점심시간, 하교 후 학원 이동 시간 중 <strong>모바일 웹 브라우저</strong> 중심 (PC 완벽 호환)</td>
+                </tr>
+                <tr>
+                    <th>차별화 포인트</th>
+                    <td>단순 성격 요약에 그치지 않고, 매일 마주치는 <strong>'학교 선생님'을 매칭 요소로 소환</strong>하여 우리 학교 학생들만 온전히 공감할 수 있는 독점적 로컬 콘텐츠 재미를 부여.</td>
+                </tr>
+                <tr>
+                    <th>선택과 집중<br>(의도적 배제)</th>
+                    <td>전문적인 심리 지표 설명이나 스크롤이 길어지는 텍스트 설명은 <strong>과감히 생략</strong>. 한눈에 들어오는 타이틀, 비주얼 중심의 키워드 뱃지, 공유하기 버튼 위주로 화면 설계.</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- 3. 핵심 12문항 지표 설계 -->
+        <div class="section mapping-section">
+            <div class="section-title">3. 아이돌 맞춤형 12문항 질문지 및 스코어링 매핑</div>
+            <p style="margin-bottom: 15px; font-size: 9.5pt; color: #666;">※ 각 문항별 선택지는 정확히 상반되는 성향(E-I / N-S / F-T / J-P)의 원시 가중치를 누적하도록 설계되었습니다.</p>
+
+            <!-- Q1 -->
+            <div class="question-card">
+                <div class="q-title"><span>Q01.</span> 오늘 내 무대 직캠 영상이 유튜브에 업로드되었다. 이때 나의 행동은?</div>
+                <div class="option-box">
+                    <div class="option"><strong>A.</strong> 업로드되자마자 바로 클릭해서 하트 누르고, 댓글 반응까지 하나하나 다 읽어본다. <span class="type-badge">E</span></div>
+                    <div class="option"><strong>B.</strong> 올라온 거 알림 보고 심장이 뛰지만, 왠지 부끄럽고 모니터링하기 무서워서 나중으로 미룬다. <span class="type-badge">I</span></div>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="question-card">
+                <div class="q-title"><span>Q02.</span> 신곡 안무 시안을 처음 따기 시작할 때, 연습실에서의 나는?</div>
+                <div class="option-box">
+                    <div class="option"><strong>A.</strong> 노래가 나오면 일단 몸부터 먼저 나간다! 틀려도 부딪쳐 보며 몸으로 익히는 편. <span class="type-badge">E</span></div>
+                    <div class="option"><strong>B.</strong> 안무가의 동작과 거울을 보며 머릿속으로 동선과 각도를 먼저 정리하고, 확실해지면 움직인다. <span class="type-badge">I</span></div>
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="question-card">
+                <div class="q-title"><span>Q03.</span> 오늘 공식 SNS에 업로드할 사진과 글을 고민 중이다. 나의 업로드 방식은?</div>
+                <div class="option-box">
+                    <div class="option"><strong>A.</strong> 방금 갑자기 생각난 힙하고 독특한 콘셉트로 즉흥 셀카를 찍어서 피드 감성 맞춰 바로 올린다. <span class="type-badge">N</span></div>
+                    <div class="option"><strong>B.</strong> 예전에 팬들 반응이 제일 좋았던 구도, 검증된 필터와 비슷하게 올린다. 안전하고 보장된 게 최고! <span class="type-badge">S</span></div>
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="question-card">
+                <div class="q-title"><span>Q04.</span> 격렬했던 연말 무대가 끝나고 대기실로 돌아왔는데, 옆 멤버가 감정에 북받쳐 엉엉 운다. 나의 반응은?</div>
+                <div class="option-box">
+                    <div class="option"><strong>A.</strong> 눈물 고인 눈으로 일단 꽉 안아주며 "고생했어 유야" 하고 같이 토닥이며 눈물을 흘린다. <span class="type-badge">F</span></div>
+                    <div class="option"><strong>B.</strong> 마음이 쓰이지만 정신을 바짝 차리고 "왜 울어? 무대에서 뭐 실수했어? 무슨 일 있었어?" 원인부터 파악한다. <span class="type-badge">T</span></div>
+                </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="question-card">
+                <div class="q-title"><span>Q05.</span> 역대급으로 텐션 높았던 팬미팅을 성공적으로 끝내고 마침내 숙소에 들어왔다. 나는?</div>
+                <div class="option-box">
+                    <div class="option"><strong>A.</strong> 거실로 나와서 씻고 멤버들이랑 야식 먹으며 오늘 있었던 웃긴 팬들 얘기, 에피소드를 끊임없이 늘어놓는다. <span class="type-badge">E</span></div>
+                    <div class="option"><strong>B.</strong> 고생하셨습니다 외치자마자 얼른 내 방, 내 침대로 들어가 문 닫고 혼자만의 정적 속에서 에너지를 충전한다. <span class="type-badge">I</span></div>
+                </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="question-card">
+                <div class="q-title"><span>Q06.</span> 오늘 밤샘 촬영용 무대 의상이 나왔는데, 내 개인적인 취향과 너무 멀다. 이때 나는?</div>
+                <div class="option-box">
+                    <div class="option"><strong>A.</strong> "비주얼 디렉터님이 다 뜻이 있겠지." 군말 없이 그냥 입는다. 어차피 무대 조명 아래서 잘 보이면 장땡! <span class="type-badge">S</span></div>
+                    <div class="option"><strong>B.</strong> 의상에 나만의 레이어드나 키치한 액세서리 포인트를 하나 슬쩍 추가해서 내 스타일로 커스텀 소화해버린다. <span class="type-badge">N</span></div>
+                </div>
+            </div>
+
+            <!-- Q7 -->
+            <div class="question-card">
+                <div class="q-title"><span>Q07.</span> 생방송 음악방송 녹화 지연으로 대기 시간이 예상보다 무려 3시간이나 길어졌다. 이때 드는 생각은?</div>
+                <div class="option-box">
+                    <div class="option"><strong>A.</strong> '그럼 오늘 밤 라디오 스케줄이랑 샵 예약은 어떻게 당겨지는 거지...?' 매니저님한테 타임라인을 바로 확인한다. <span class="type-badge">J</span></div>
+                    <div class="option"><strong>B.</strong> '뭐 어떻게든 딜레이 조율 되겠지~' 돗자리 깔고 누워서 꿀잠을 자거나 휴대폰 게임을 하며 지금 상황을 즐긴다. <span class="type-badge">P</span></div>
+                </div>
+            </div>
+
+            <!-- Q8 -->
+            <div class="question-card">
+                <div class="q-title"><span>Q08.</span> 앙코르 라이브 무대를 하다가 너무 신난 나머지 가사를 한 소절 통으로 날려버렸다! 나의 대처는?</div>
+                <div class="option-box">
+                    <div class="option"><strong>A.</strong> 옆에 있는 멤버랑 눈 마주치자마자 찡긋 혀 내밀고 그냥 같이 와하학 웃으면서 자연스럽게 다음 파트로 넘긴다. <span class="type-badge">P</span></div>
+                    <div class="option"><strong>B.</strong> 프로답게 찰나의 표정 관리를 완벽하게 하며 넘어가고, 무대가 끝나고 퇴근길 차 안에서 혼자 어디서 절었는지 철저히 복기한다. <span class="type-badge">J</span></div>
+                </div>
+            </div>
+
+            <!-- Q9 -->
+            <div class="question-card">
+                <div class="q-title"><span>Q09.</span> 드디어 꿈에 그리던 해외 투어 첫 번째 도시에 도착해 호텔에 짐을 풀었다! 나의 상태는?</div>
+                <div class="option-box">
+                    <div class="option"><strong>A.</strong> 이미 한국에서 출국하기 전부터 구글맵으로 숙소 근처 맛집, 예쁜 카페, 소품샵 핫플을 동선별로 다 찾아놨다. <span class="type-badge">J</span></div>
+                    <div class="option"><strong>B.</strong> 일단 무사히 도착했으니까 침대에 누워 쉰다. 내일 나갈 때쯤 근처 열려있는 곳 대충 검색해서 가거나 끌리는 데로 간다. <span class="type-badge">P</span></div>
+                </div>
+            </div>
+
+            <!-- Q10 -->
+            <div class="question-card">
+                <div class="q-title"><span>Q10.</span> 보컬 레슨 연습실에서 까다로운 킬링 파트 가창을 마치고 트레이너 선생님께 극찬을 받았다! 나의 속마음은?</div>
+                <div class="option-box">
+                    <div class="option"><strong>A.</strong> 칭찬은 고맙지만, '내가 오늘 소리를 낼 때 공명점을 어디에 뒀길래 잘 붙었지?' 칭찬받은 기술적 이유가 더 궁금하다. <span class="type-badge">T</span></div>
+                    <div class="option"><strong>B.</strong> 복잡한 분석 필요 없이 인정받았다는 사실 그 자체로 눈물 나게 행복함! 온몸에 도파민이 돌며 하루 종일 날아갈 것 같다. <span class="type-badge">F</span></div>
+                </div>
+            </div>
+
+            <!-- Q11 -->
+            <div class="question-card">
+                <div class="q-title"><span>Q11.</span> 마침내 내일이 대망의 공중파 데뷔 첫 방송일이다. 잠자리에 누운 전날 밤 나의 모습은?</div>
+                <div class="option-box">
+                    <div class="option"><strong>A.</strong> 눈을 감고 내일 아침 리허설 동선, 카메라 아이컨택 타이틀, 내 파트 제스처를 머릿속으로 무한 시뮬레이션 돌려본다. <span class="type-badge">J</span></div>
+                    <div class="option"><strong>B.</strong> 지금 계속 시뮬레이션 돌려봤자 생각만 꼬리를 물고 밤새겠다 싶어서, 아예 생각을 끄려고 최애 유튜브 영상을 보다가 스르륵 잠든다. <span class="type-badge">P</span></div>
+                </div>
+            </div>
+
+            <!-- Q12 -->
+            <div class="question-card">
+                <div class="q-title"><span>Q12.</span> 컴백 전 컴파운드 기간 중, 스케줄 표에 정말 오랜만에 '종일 연습 없는 전면 자유시간'이 주어졌다! 나는?</div>
+                <div class="option-box">
+                    <div class="option"><strong>A.</strong> 아침에 눈뜨자마자 단톡방에 "얘들아 오늘 다 같이 보드게임 카페 가거나 한강 갈 사람 구함!!" 카톡을 신나게 보낸다. <span class="type-badge">E</span></div>
+                    <div class="option"><strong>B.</strong> 침대 위가 제일 안전하다. 혼자 조용히 향 좋은 동네 카페에 가거나 밀린 넷플릭스 시리즈를 정주행하며 에너지를 고요히 아낀다. <span class="type-badge">I</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. 결과 매칭 데이터베이스 및 아키텍처 안내 -->
+        <div class="section mapping-section">
+            <div class="section-title">4. 로컬라이징 결과 매핑 시스템 (이화여고 전용 아키텍처)</div>
+            <p style="font-size: 10pt; margin-bottom: 15px;">
+                최종 합산된 4가지 지표 스코어링의 조합(총 16가지 성격 유형)에 따라, 걸그룹 내 최적의 매칭 포지션 타이틀을 부여하고, 학교 특화형 선생님 소환 궁합 알고리즘을 매칭합니다.
+            </p>
+            
+            <div class="mapping-grid">
+                <table style="font-size: 9.5pt;">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">MBTI</th>
+                            <th style="width: 25%;">걸그룹 매칭 포지션</th>
+                            <th style="width: 30px; text-align: center; background: #ffe5ec; color: #ff4d6d;">궁합</th>
+                            <th style="width: 30%;">이화여고 내 가상 매칭 페르소나 및 설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- 1 -->
+                        <tr>
+                            <td rowspan="2" style="font-weight: 700; text-align: center; background-color: #fffafb;">ENFJ</td>
+                            <td rowspan="2" style="font-weight: 600; color: #c9184a;">모두를 이끄는<br>덕망 가득 '대장 리더'</td>
+                            <td style="background-color: #e8f5e9; color: #2e7d32; text-align: center; font-weight: bold; padding: 4px;">BEST</td>
+                            <td><strong>따스한 문학 감성 국어 선생님</strong><br><span style="font-size: 8.5pt; color: #666;">(과대표 스타일의 리더십을 우쭈쭈 전폭 지지해 주심)</span></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #ffebee; color: #c62828; text-align: center; font-weight: bold; padding: 4px;">WORST</td>
+                            <td><strong>칼출근 칼퇴근 원칙주의 수학 선생님</strong><br><span style="font-size: 8.5pt; color: #666;">(감성 배제, 가끔 오버하는 열정이 안 통함)</span></td>
+                        </tr>
+                        <!-- 2 -->
+                        <tr>
+                            <td rowspan="2" style="font-weight: 700; text-align: center; background-color: #fffafb;">ENFP</td>
+                            <td rowspan="2" style="font-weight: 600; color: #c9184a;">대기실 텐션 장인<br>인간 비타민 '예능캐'</td>
+                            <td style="background-color: #e8f5e9; color: #2e7d32; text-align: center; font-weight: bold; padding: 4px;">BEST</td>
+                            <td><strong>리액션 장인 유쾌한 음악/미술 선생님</strong><br><span style="font-size: 8.5pt; color: #666;">(아이디어를 낼 때마다 천재라고 트로피 쥐어주심)</span></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #ffebee; color: #c62828; text-align: center; font-weight: bold; padding: 4px;">WORST</td>
+                            <td><strong>매의 눈을 가진 학생부 엄격한 선생님</strong><br><span style="font-size: 8.5pt; color: #666;">(지나친 대기실 텐션 부리다 복도에서 제지당함)</span></td>
+                        </tr>
+                        <!-- 3 -->
+                        <tr>
+                            <td rowspan="2" style="font-weight: 700; text-align: center; background-color: #fffafb;">INFJ</td>
+                            <td rowspan="2" style="font-weight: 600; color: #c9184a;">팀의 중심을 잡는<br>외유내강 '정신적 지주'</td>
+                            <td style="background-color: #e8f5e9; color: #2e7d32; text-align: center; font-weight: bold; padding: 4px;">BEST</td>
+                            <td><strong>인생 2회차 포스 역사/세계사 선생님</strong><br><span style="font-size: 8.5pt; color: #666;">(눈빛만 봐도 깊은 생각을 다 알아채고 차 한잔 주심)</span></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #ffebee; color: #c62828; text-align: center; font-weight: bold; padding: 4px;">WORST</td>
+                            <td><strong>아이디어 즉흥 폭발 과학실험 선생님</strong><br><span style="font-size: 8.5pt; color: #666;">(갑자기 계획 뒤엎을 때마다 속으로 이마 짚음)</span></td>
+                        </tr>
+                        <!-- 4 -->
+                        <tr>
+                            <td rowspan="2" style="font-weight: 700; text-align: center; background-color: #fffafb;">INFP</td>
+                            <td rowspan="2" style="font-weight: 600; color: #c9184a;">새벽 감성 가사 제조기<br>'독보적 음색 보컬'</td>
+                            <td style="background-color: #e8f5e9; color: #2e7d32; text-align: center; font-weight: bold; padding: 4px;">BEST</td>
+                            <td><strong>다정다감 끝판왕 위클래스 상담 선생님</strong><br><span style="font-size: 8.5pt; color: #666;">(여린 유리 심장을 벨벳 소파처럼 포근하게 감싸 안아줌)</span></td>
+                        </tr>
+                        <tr>
+                            <td style="background-color: #ffebee; color: #c62828; text-align: center; font-weight: bold; padding: 4px;">WORST</td>
+                            <td><strong>팩트 폭행 1타 강사 스타일 지리 선생님</strong><br><span style="font-size: 8.5pt; color: #666;">(수업 도중 "너 딴생각했지?" 한마디에 심장 철렁)</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <p style="font-size: 9pt; color: #888; margin-top: 10px; text-align: center;">
+                (나머지 12가지 유형 역시 동일한 스케일의 로컬라이징 알고리즘으로 웹 프론트엔드 자바스크립트 내 JSON 데이터로 바인딩됩니다.)
+            </p>
+        </div>
+
+    </div>
+
+</body>
+</html>
